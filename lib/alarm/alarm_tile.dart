@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
+import 'alarm_object.dart';
 
 class AlarmTile extends StatefulWidget {
-  final String title;
-  final String subtitle;
+  final Alarm alarm;
+  final void Function(Alarm) onToggle;
 
-  AlarmTile({required this.title, required this.subtitle});
+  const AlarmTile({super.key, required this.alarm, required this.onToggle});
 
   @override
   _AlarmTileState createState() => _AlarmTileState();
 }
 
 class _AlarmTileState extends State<AlarmTile> {
-  bool _switchValue = true;
-
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(4),
-      color: Color(0xffffffff),
+      color: const Color(0xffffffff),
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4.0),
-        side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
+        side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
       ),
+      
       child: ListTile(
-        //Icon is wrapped in a colummn for centering...
-        leading: Column( 
-          mainAxisAlignment: MainAxisAlignment.center,  // aligns the icon vertically center
+        leading: const Column( 
+          mainAxisAlignment: MainAxisAlignment.center,  
           children: [
             Icon(Icons.alarm, color: Color(0xff212435), size: 24),
           ],
         ),
+
         title: Text(
-          widget.title,
-          style: TextStyle(
+          widget.alarm.time,
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 20,
             color: Color(0xff000000),
@@ -41,8 +40,8 @@ class _AlarmTileState extends State<AlarmTile> {
           textAlign: TextAlign.start,
         ),
         subtitle: Text(
-          widget.subtitle,
-          style: TextStyle(
+          widget.alarm.challenge,
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 12,
             color: Color(0xff000000),
@@ -50,10 +49,11 @@ class _AlarmTileState extends State<AlarmTile> {
           textAlign: TextAlign.start,
         ),
         trailing: Switch(
-          value: _switchValue,
+          value: widget.alarm.isActive,
           onChanged: (value) {
             setState(() {
-              _switchValue = value;
+              widget.alarm.isActive = value;
+              widget.onToggle(widget.alarm);
             });
           },
         ),
@@ -61,3 +61,5 @@ class _AlarmTileState extends State<AlarmTile> {
     );
   }
 }
+
+

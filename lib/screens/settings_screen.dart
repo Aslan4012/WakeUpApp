@@ -1,22 +1,22 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
-import 'SettingsListTile.dart';
+import '../settings/settings_listtile.dart';
+import '../challenge/dropdown_divider.dart';
 
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffffffff),
+      backgroundColor: const Color(0xffffffff),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
 
-        title: Text(
+        title: const Text(
           "Settings",
           style: TextStyle(
             fontWeight: FontWeight.w700,
@@ -27,18 +27,20 @@ class SettingsScreen extends StatelessWidget {
       ),
 
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SizedBox(
+              
+              const SizedBox(
                 height: 16,
                 width: 16,
               ),
-              Text(
+
+              const Text(
                 "General Setting",
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
@@ -47,6 +49,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               
+              const DropDivider(),
               SettingsListTile(
                 title: 'Snooze settings',
                 leadingIcon: Icons.more_horiz,
@@ -54,6 +57,8 @@ class SettingsScreen extends StatelessWidget {
                   print('Snooze settings tapped');
                 },
               ),
+              
+              const DropDivider(),
               SettingsListTile(
                 title: 'Andet fis',
                 leadingIcon: Icons.build,
@@ -61,6 +66,8 @@ class SettingsScreen extends StatelessWidget {
                   print('Andet fis tapped');
                 },
               ),
+              
+              const DropDivider(),
               SettingsListTile(
                 title: 'Customize',
                 leadingIcon: Icons.bluetooth,
@@ -68,6 +75,7 @@ class SettingsScreen extends StatelessWidget {
                   print('Customize tapped');
                 },
               ),
+              const DropDivider(),
             ],
           ),
         ),

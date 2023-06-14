@@ -5,7 +5,7 @@ class SettingsListTile extends StatelessWidget {
   final IconData leadingIcon;
   final VoidCallback onTap;
 
-  SettingsListTile({
+  const SettingsListTile({super.key, 
     required this.title,
     required this.leadingIcon,
     required this.onTap,
@@ -14,37 +14,31 @@ class SettingsListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
       child: ListTile(
-        tileColor: Color(0x00ffffff),
+        onTap: onTap,
+        tileColor: const Color(0x00ffffff),
         title: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
-            fontStyle: FontStyle.normal,
             fontSize: 16,
             color: Color(0xff000000),
           ),
           textAlign: TextAlign.left,
         ),
-        dense: true,
-        contentPadding: EdgeInsets.all(0),
-        selected: false,
-        selectedTileColor: Color(0x42000000),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
+        
         leading: Icon(
           leadingIcon,
           color: Colors.blue,
           size: 24,
         ),
-        trailing: Icon(
+       
+        trailing: const Icon(
           Icons.arrow_forward_ios,
           color: Colors.grey,
           size: 18,
         ),
-        onTap: onTap,
       ),
     );
   }
