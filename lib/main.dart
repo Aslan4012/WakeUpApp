@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:wakeup/challenge/ChallengesScreen.dart';
-import 'alarm/AlarmScreen.dart';
-import 'settings/SettingsScreen.dart';
+import 'package:wakeup/screens/challenges_screen.dart';
+import 'screens/alarm_screen.dart';
+import 'screens/settings_screen.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyApp',
+      title: 'My App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
+      navigatorKey: navigatorKey,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -31,10 +37,17 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    AlarmScreen(),
-    ChallengeScreen(),
-    SettingsScreen(),
+    const AlarmScreen(),
+    const ChallengeScreen(),
+    const SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    precacheImage(const AssetImage('assets/BackgroundChallenge.jpg'),
+        navigatorKey.currentContext!);
+  }
 
   void onTabTapped(int index) {
     setState(() {
@@ -49,13 +62,13 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.alarm),
             label: 'Alarm',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.list),
             label: 'Challenges',
           ),
           BottomNavigationBarItem(
