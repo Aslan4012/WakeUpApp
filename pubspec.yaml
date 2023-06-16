@@ -1,5 +1,5 @@
-name: alarm_example
-description: Demonstrates how to use the alarm plugin.
+name: softwareprojekt
+description: Alarm App
 version: 0.1.2
 
 # The following line prevents the package from being accidentally published to

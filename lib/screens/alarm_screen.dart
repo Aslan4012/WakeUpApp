@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:alarm/alarm.dart';
-import 'package:alarm_example/screens/ring.dart';
 import 'package:flutter/material.dart';
 import '../widgets/alarm_tile.dart';
 import 'edit_alarm.dart';
+import 'ring.dart';
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({Key? key}) : super(key: key);
