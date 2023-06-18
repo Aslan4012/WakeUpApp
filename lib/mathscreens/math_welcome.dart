@@ -47,13 +47,12 @@ class MathChallenges extends StatelessWidget {
                 ),
               ),
             ),
-            
             Column(
               children: [
-                card(context, "Add", () => AddMathChallenge(alarmId: alarmId)),
-                //card(context, "Subtract", () => MinusScreen(alarmId: alarmId)),
-                //card(context, "Multiply", () => MultiplyScreen(alarmId: alarmId)),
-                //card(context, "Divide", () => DivideScreen(alarmId: alarmId)),
+                card(context, "Add", () => MathChallenge(alarmId: alarmId, chosen: "add")),
+                card(context, "Subtract", () => MathChallenge(alarmId: alarmId, chosen: "minus",)),
+                card(context, "Multiply", () => MathChallenge(alarmId: alarmId, chosen: "multiply")),
+                card(context, "Divide", () => MathChallenge(alarmId: alarmId, chosen: "divide",)),
               ],
             ),
           ],
@@ -63,15 +62,15 @@ class MathChallenges extends StatelessWidget {
   }
 
     Widget card(BuildContext context, String title, Widget Function() createTargetScreen) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => createTargetScreen(),
-        ),
-      );
-    },
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => createTargetScreen(),
+            ),
+          );
+        },
       child: Card(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
         color: Color(0xffffffff),

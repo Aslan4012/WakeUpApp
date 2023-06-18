@@ -11,23 +11,27 @@ const textAll = TextStyle(
   fontSize: 30,
 );
 
-class AddMathChallenge extends StatefulWidget {
-  const AddMathChallenge({Key? key, required this.alarmId}) : super(key: key);
+class MathChallenge extends StatefulWidget {
+  const MathChallenge({Key? key, required this.alarmId, required this.chosen})
+      : super(key: key);
   final int alarmId;
+  final String chosen;
 
   @override
-  _AddMathChallengeState createState() => _AddMathChallengeState();
+  _MathChallengeState createState() => _MathChallengeState();
 }
 
-class _AddMathChallengeState extends State<AddMathChallenge> {
+class _MathChallengeState extends State<MathChallenge> {
   List<String> calculatorKeys = [
-    '7','8','9','0','4','5','6','C','1','2','3','=',
+    '7', '8', '9', '0', '4', '5', '6', 'C', '1', '2', '3', '=',
   ];
 
   String answer = '';
   var numGen = Random();
-  int num1 = 0;
-  int num2 = 0;
+  late int num1;
+  late int num2;
+  late int result;
+  String operatorSymbol = '';
 
   @override
   void initState() {
@@ -38,38 +42,81 @@ class _AddMathChallengeState extends State<AddMathChallenge> {
   void buttonspressed(String button) {
     setState(() {
       if (button == 'C') {
-        answer = ''; 
+        answer = '';
       } else if (button == '=') {
-        result();
+        checkResult();
       } else if (answer.length < 5) {
-        answer += button; 
+        answer += button;
       }
     });
   }
 
-  void result() {
-  try {
-    if (int.parse(answer) == num1 + num2) {
-      GlobalData().showAnimation = true;
-      Alarm.stop(widget.alarmId).then((_) {
-        Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AlarmScreen()));
-      });
-      dialogBox('Correct', nextQ, context);
-    } else {
-      dialogBox('Incorrect', nextQ, context);
+  void checkResult() {
+    try {
+      if (int.parse(answer) == result) {
+        GlobalData().showAnimation = true;
+        Alarm.stop(widget.alarmId).then((_) {
+          Navigator.pop(context);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AlarmScreen()));
+        });
+        dialogBox('Correct', nextQ, context);
+      } else {
+        dialogBox('Incorrect', nextQ, context);
+      }
+    } catch (e) {
+      dialogBox('Invalid input', nextQ, context);
     }
-  } catch (e) {
-    dialogBox('Invalid input', nextQ, context);
   }
-}
 
   void generateRandomNumbers() {
-    setState(() {
-      num1 = numGen.nextInt(100);
-      num2 = numGen.nextInt(100);
-    });
-  }
+  setState(() {
+    switch (widget.chosen) {
+      case "add":
+        operatorSymbol = "+";
+        num1 = numGen.nextInt(100);
+        num2 = numGen.nextInt(100);
+        result = num1 + num2;
+        break;
+
+      case "minus":
+        operatorSymbol = "-";
+        num1 = numGen.nextInt(100);
+        num2 = numGen.nextInt(100);
+        // Ensure num1 is always greater or equal to num2... No negative results.
+        if (num1 < num2) {
+          int temp = num1;
+          num1 = num2;
+          num2 = temp;
+        }
+        result = num1 - num2;
+        break;
+
+      case "multiply":
+        operatorSymbol = "*";
+        num1 = numGen.nextInt(16); // 0 to 15
+        num2 = numGen.nextInt(16);
+        result = num1 * num2;
+        break;
+
+      //Ensure no division by zero, ensure that result is a whole number: 
+      //Num 2 is randomly chosen and num1 is a product of num 2 and another random number. Result will be a whole number...
+      case "divide":
+        operatorSymbol = "/";
+        num2 = numGen.nextInt(10) + 1;
+        num1 = num2 * (numGen.nextInt(10) + 1);
+        result = num1 ~/ num2;
+        break;
+
+      default:
+        operatorSymbol = "+";
+        num1 = numGen.nextInt(100);
+        num2 = numGen.nextInt(100);
+        result = num1 + num2;
+    }
+  });
+}
+
 
   void nextQ() {
     Navigator.of(context).pop();
@@ -120,7 +167,7 @@ class _AddMathChallengeState extends State<AddMathChallenge> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(header: 'Plus'),
+      appBar: const MyAppBar(header: 'Math Challenge'),
       body: Stack(
         children: [
           backGround(),
@@ -128,12 +175,12 @@ class _AddMathChallengeState extends State<AddMathChallenge> {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 100, 
-                horizontal: 24.0, 
+                vertical: 100,
+                horizontal: 24.0,
               ),
               child: FractionallySizedBox(
                 widthFactor: 0.8,
-                heightFactor: 0.3, 
+                heightFactor: 0.3,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
@@ -143,7 +190,7 @@ class _AddMathChallengeState extends State<AddMathChallenge> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '$num1 + $num2 = ',
+                            '$num1 $operatorSymbol $num2 = ',
                             style: textAll,
                           ),
                           ClipRRect(

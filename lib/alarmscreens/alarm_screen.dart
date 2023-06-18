@@ -108,37 +108,42 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
         ],
       ),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                alarms.isEmpty ? "You have no alarms" : "Alarms",
-                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 30, color: Colors.black),
-              ),
-            ),
-            Expanded(
-              child: alarms.isEmpty
-                  ? Container()
-                  : ListView.separated(
-                      itemCount: alarms.length,
-                      separatorBuilder: (context, index) => const Divider(),
-                      itemBuilder: (context, index) {
-                        return AlarmTile(
-                          key: Key(alarms[index].id.toString()),
-                          title: TimeOfDay(hour: alarms[index].dateTime.hour, minute: alarms[index].dateTime.minute).format(context),
-                          onPressed: () => navigateToAlarmScreen(alarms[index]),
-                          onDismissed: (direction) {
-                            final alarmId = alarms[index].id;
-                            GlobalData().alarmChallenges.remove(alarmId);
-                            Alarm.stop(alarmId).then((_) => loadAlarms());
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    alarms.isEmpty ? "You have no alarms" : "Alarms",
+                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 30, color: Colors.black),
+                  ),
+                ),
+                Expanded(
+                  child: alarms.isEmpty
+                      ? Container()
+                      : ListView.separated(
+                          itemCount: alarms.length,
+                          separatorBuilder: (context, index) => const Divider(),
+                          itemBuilder: (context, index) {
+                            return AlarmTile(
+                              key: Key(alarms[index].id.toString()),
+                              title: TimeOfDay(hour: alarms[index].dateTime.hour, minute: alarms[index].dateTime.minute).format(context),
+                              onPressed: () => navigateToAlarmScreen(alarms[index]),
+                              onDismissed: (direction) {
+                                final alarmId = alarms[index].id;
+                                GlobalData().alarmChallenges.remove(alarmId);
+                                Alarm.stop(alarmId).then((_) => loadAlarms());
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
+                        ),
+                ),
+              ],
             ),
             if (showAnimation) ...[
-              Center(
+              Align(
+                alignment: Alignment.center,
                 child: AnimatedOpacity(
                   opacity: showAnimation ? 1.0 : 0.0,
                   duration: const Duration(seconds: 3),

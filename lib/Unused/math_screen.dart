@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../mathscreens/plus_screen.dart';
+import '../mathscreens/math_challenge.dart';
 
 class MathChallengeScreen extends StatelessWidget {
   final int alarmId;
