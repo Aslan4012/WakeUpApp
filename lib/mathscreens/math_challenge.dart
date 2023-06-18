@@ -60,7 +60,6 @@ class _MathChallengeState extends State<MathChallenge> {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const AlarmScreen()));
         });
-        dialogBox('Correct', nextQ, context);
       } else {
         dialogBox('Incorrect', nextQ, context);
       }
