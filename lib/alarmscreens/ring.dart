@@ -1,11 +1,12 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'challenges_screen.dart';
+import 'package:softwareprojekt/mathscreens/math_welcome.dart';
 
 class RingScreen extends StatelessWidget {
   final AlarmSettings alarmSettings;
+  final String challenge;
 
-  const RingScreen({Key? key, required this.alarmSettings}) : super(key: key);
+  const RingScreen({Key? key, required this.alarmSettings, required this.challenge}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,18 @@ class RingScreen extends StatelessWidget {
       ),
     );
   }
+
+Route mapChallengeToScreen(String challenge) {
+  switch(challenge) {
+    case 'Math': return MaterialPageRoute(builder: (context) => MathChallenges(alarmId: alarmSettings.id));
+    //case 'Walk': return MaterialPageRoute(builder: (context) => WalkChallengeScreen(alarmId: alarmSettings.id));
+    //case 'Spin': return MaterialPageRoute(builder: (context) => SpinChallengeScreen(alarmId: alarmSettings.id));
+    //case 'Shake': return MaterialPageRoute(builder: (context) => ShakeChallengeScreen(alarmId: alarmSettings.id));
+    default: throw Exception('SOMEHOW PASSED ON: $challenge'); //WONT HAPPEN, PLEASE....
+  }
+}
+
+
 
   Widget _buildAlarmInfo(BuildContext context) {
     return Column(
@@ -69,16 +82,19 @@ class RingScreen extends StatelessWidget {
     );
   }
 
-  //new alarm =  +1 minute from current time.
+  //Add 1 minute from current time.
   void _handleSnooze(BuildContext context) {
     final now = DateTime.now();
+    final snoozeTime = now.add(const Duration(minutes: 1));
     Alarm.set(
       alarmSettings: alarmSettings.copyWith(
-        dateTime: DateTime(now.year, now.month, now.day, now.hour, now.minute, 0, 0)
-            .add(const Duration(minutes: 1)),
+        dateTime: DateTime(snoozeTime.year, snoozeTime.month, snoozeTime.day, snoozeTime.hour, snoozeTime.minute, 0, 0),
       ),
-    ).then((_) => Navigator.pop(context));
+    ).then((_) {
+      Navigator.pop(context);
+    });
   }
+
 
   Widget _buildStopButton(BuildContext context) {
     return ElevatedButton(
@@ -98,11 +114,6 @@ class RingScreen extends StatelessWidget {
   }
 
   void _handleStop(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChallengeScreen(alarmId: alarmSettings.id),
-      ),
-    );
+    Navigator.push(context, mapChallengeToScreen(challenge));
   }
 }

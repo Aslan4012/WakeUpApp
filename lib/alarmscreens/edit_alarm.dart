@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
+import 'package:softwareprojekt/widgets/challenge_dropdown.dart';
+import '../globaldata/global_data.dart';
 import '../widgets/delete_button.dart';
 import '../widgets/header_buttons.dart';
 import '../widgets/setting_switch.dart';
@@ -50,6 +52,7 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
           widget.alarmSettings!.notificationBody != null &&
           widget.alarmSettings!.notificationBody!.isNotEmpty;
       assetAudio = widget.alarmSettings!.assetAudioPath;
+      challenge = GlobalData().alarmChallenges[widget.alarmSettings!.id] ?? 'Math';
     }
   }
 
@@ -64,6 +67,16 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
       assetAudio = sound;
     });
   }
+
+  void _onChallengeChanged(String newChallenge) {
+  setState(() {
+    challenge = newChallenge;
+    if (!creating) {
+      // if not creating, we have an existing alarm
+      GlobalData().alarmChallenges[widget.alarmSettings!.id] = newChallenge;
+    }
+  });
+}
 
   void _onLoopAudioChanged(bool value) {
     setState(() {
@@ -116,14 +129,32 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
   }
 
   void _saveAlarm() {
-    Alarm.set(alarmSettings: _buildAlarmSettings()).then((res) {
-      if (res) Navigator.pop(context, true);
+    final alarmSettings = _buildAlarmSettings();
+    Alarm.set(alarmSettings: alarmSettings).then((res) {
+      if (res) {
+        GlobalData().alarmChallenges[alarmSettings.id] = challenge;
+        Navigator.pop(context, true);
+        
+        // ignore: avoid_print, for TESTING...
+        print('SETTING ALARM: Challenge for alarm with id: ${alarmSettings.id} set to: ${GlobalData().alarmChallenges[alarmSettings.id]}');
+      }
     });
   }
 
   void _deleteAlarm() {
     Alarm.stop(widget.alarmSettings!.id).then((res) {
-      if (res) Navigator.pop(context, true);
+      if (res) {
+        int testvariable = widget.alarmSettings!.id;
+        // ignore: avoid_print, for TESTING...
+        print('Deleting alarm with id $testvariable, challenge: ${GlobalData().alarmChallenges[testvariable]}');
+
+        //Our functionality
+        GlobalData().alarmChallenges.remove(widget.alarmSettings!.id);
+        Navigator.pop(context, true);
+        
+        // ignore: avoid_print, for TESTING...
+        print('challenge at $testvariable is null: ' + '${GlobalData().alarmChallenges[testvariable] == null}');
+      }
     });
   }
 
@@ -140,6 +171,7 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
           ),
           TimePickerButton(selectedTime: selectedTime, onTimePick: _onTimePick),
           SoundDropdown(value: assetAudio, onChanged: _onSoundChanged),
+          ChallengeDropdown(value: challenge, onChanged: _onChallengeChanged),
           SettingSwitch(title: 'Loop alarm audio', value: loopAudio, onChanged: _onLoopAudioChanged),
           SettingSwitch(title: 'Vibrate', value: vibrate, onChanged: _onVibrateChanged),
           SettingSwitch(title: 'Show notification', value: showNotification, onChanged: _onShowNotificationChanged),

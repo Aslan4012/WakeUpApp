@@ -4,7 +4,7 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'screens/alarm_screen.dart';
+import 'alarmscreens/alarm_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -51,7 +51,6 @@ class AlarmHomePage extends StatefulWidget {
 }
 
 class _AlarmHomePageState extends State<AlarmHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

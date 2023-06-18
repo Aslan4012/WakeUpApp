@@ -2,38 +2,62 @@ import 'package:flutter/material.dart';
 
 class AlarmTile extends StatelessWidget {
   final String title;
-  final void Function()? onPressed;
-  final void Function()? onDismissed;
-  final bool isLocked;
+  final Function()? onPressed;
+  final Function(DismissDirection)? onDismissed;
 
   const AlarmTile({
     Key? key,
     required this.title,
     this.onPressed,
     this.onDismissed,
-    required this.isLocked,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: key!,
-      direction: onDismissed != null
-          ? DismissDirection.endToStart
-          : DismissDirection.none,
+      direction: DismissDirection.startToEnd,
       background: Container(
         color: Colors.red,
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 30),
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 30),
         child: const Icon(
           Icons.delete,
           size: 30,
           color: Colors.white,
         ),
       ),
-      onDismissed: (_) => onDismissed?.call(),
+      confirmDismiss: (direction) async {
+        final confirm = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Confirm"),
+              content: const Text("Are you sure you want to delete this alarm?"),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("CANCEL"),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: const Text("DELETE"),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        if (confirm == true) {
+          onDismissed?.call(direction);
+        }
+        return confirm;
+      },
       child: RawMaterialButton(
-        onPressed: isLocked ? null : onPressed,
+        onPressed: onPressed,
         child: Container(
           height: 100,
           padding: const EdgeInsets.all(35),
@@ -41,14 +65,17 @@ class AlarmTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Icon(Icons.alarm, size: 35),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
+              Expanded(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              isLocked ? Container() : const Icon(Icons.keyboard_arrow_right_rounded, size: 35),
+              const Icon(Icons.keyboard_arrow_right_rounded, size: 35),
             ],
           ),
         ),
@@ -56,4 +83,3 @@ class AlarmTile extends StatelessWidget {
     );
   }
 }
-

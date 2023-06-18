@@ -1,44 +1,33 @@
 import 'dart:math';
 
+import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'const.dart';
+import '../alarmscreens/alarm_screen.dart';
+import '../globaldata/global_data.dart';
+import '../screens/const.dart';
 
 const textAll = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 30,
 );
 
-void main() {
-  runApp(const Math());
-}
-
-class MathPlus extends StatefulWidget {
-  const MathPlus({Key? key}) : super(key: key);
+class AddMathChallenge extends StatefulWidget {
+  const AddMathChallenge({Key? key, required this.alarmId}) : super(key: key);
+  final int alarmId;
 
   @override
-  _MathPlusState createState() => _MathPlusState();
+  _AddMathChallengeState createState() => _AddMathChallengeState();
 }
 
-class _MathPlusState extends State<MathPlus> {
-  List<String> lommeregner = [
-    '7',
-    '8',
-    '9',
-    '0',
-    '4',
-    '5',
-    '6',
-    'C',
-    '1',
-    '2',
-    '3',
-    '=',
+class _AddMathChallengeState extends State<AddMathChallenge> {
+  List<String> calculatorKeys = [
+    '7','8','9','0','4','5','6','C','1','2','3','=',
   ];
 
   String answer = '';
   var numGen = Random();
-  int a = 0;
-  int b = 0;
+  int num1 = 0;
+  int num2 = 0;
 
   @override
   void initState() {
@@ -49,37 +38,44 @@ class _MathPlusState extends State<MathPlus> {
   void buttonspressed(String button) {
     setState(() {
       if (button == 'C') {
-        answer = ''; // Clear the answer if 'C' button is pressed
+        answer = ''; 
       } else if (button == '=') {
         result();
       } else if (answer.length < 5) {
-        answer += button; // Append the pressed button to the answer string
+        answer += button; 
       }
     });
   }
 
   void result() {
-    if (int.parse(answer) == a + b) {
+  try {
+    if (int.parse(answer) == num1 + num2) {
+      GlobalData().showAnimation = true;
+      Alarm.stop(widget.alarmId).then((_) {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AlarmScreen()));
+      });
       dialogBox('Correct', nextQ, context);
     } else {
       dialogBox('Incorrect', nextQ, context);
     }
+  } catch (e) {
+    dialogBox('Invalid input', nextQ, context);
   }
+}
 
   void generateRandomNumbers() {
     setState(() {
-      a = numGen.nextInt(100);
-      b = numGen.nextInt(100);
+      num1 = numGen.nextInt(100);
+      num2 = numGen.nextInt(100);
     });
   }
 
   void nextQ() {
     Navigator.of(context).pop();
-
     setState(() {
       answer = '';
     });
-
     generateRandomNumbers();
   }
 
@@ -132,13 +128,12 @@ class _MathPlusState extends State<MathPlus> {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 100, // Vertical padding
-                horizontal: 24.0, // Horizontal padding
+                vertical: 100, 
+                horizontal: 24.0, 
               ),
               child: FractionallySizedBox(
-                widthFactor:
-                    0.8, // Adjust this value to control the width of the widget
-                heightFactor: 0.3, // Set the height as 2/3 of the screen
+                widthFactor: 0.8,
+                heightFactor: 0.3, 
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
@@ -148,7 +143,7 @@ class _MathPlusState extends State<MathPlus> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '$a + $b = ',
+                            '$num1 + $num2 = ',
                             style: textAll,
                           ),
                           ClipRRect(
@@ -177,42 +172,38 @@ class _MathPlusState extends State<MathPlus> {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 50, // Vertical padding
-                horizontal: 24.0, // Horizontal padding
+                vertical: 50, 
+                horizontal: 24.0,
               ),
               child: FractionallySizedBox(
-                widthFactor:
-                    1, // Adjust this value to control the width of the widget
-                heightFactor: 0.41, // Set the height as 2/3 of the screen
+                widthFactor: 1, 
+                heightFactor: 0.41,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      20), // Set the desired border radius
+                  borderRadius: BorderRadius.circular(20),
                   child: Container(
-                    color: Colors.blue[300], // Set the desired background color
+                    color: Colors.blue[300],
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GridView.builder(
-                          itemCount: lommeregner.length,
+                          itemCount: calculatorKeys.length,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                           ),
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(8),
                               child: GestureDetector(
-                                onTap: () => buttonspressed(lommeregner[index]),
+                                onTap: () => buttonspressed(calculatorKeys[index]),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromARGB(127, 11, 11, 222),
+                                    color: const Color.fromARGB(127, 11, 11, 222),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Center(
                                     child: Text(
-                                      lommeregner[index],
+                                      calculatorKeys[index],
                                       style: textAll,
                                     ),
                                   ),
@@ -230,18 +221,6 @@ class _MathPlusState extends State<MathPlus> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class Math extends StatelessWidget {
-  const Math({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MathPlus(),
     );
   }
 }

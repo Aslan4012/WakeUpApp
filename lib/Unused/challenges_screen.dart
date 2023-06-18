@@ -1,9 +1,9 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'package:softwareprojekt/screens/math_screen.dart';
 import 'package:softwareprojekt/screens/walk_screen.dart';
 
-import 'alarm_screen.dart';
+import '../globaldata/global_data.dart';
+import '../alarmscreens/alarm_screen.dart';
 
 class ChallengeScreen extends StatelessWidget {
   final int alarmId;
@@ -158,6 +158,7 @@ class ChallengeScreen extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
+                      GlobalData().alarmChallenges.remove(alarmId);
                       Alarm.stop(alarmId).then((_) {
                         Navigator.pushReplacement(
                           context,

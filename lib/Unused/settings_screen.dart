@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import '../settings/settings_listtile.dart';
-import '../Unused/dropdown_divider.dart';
+import 'settings_listtile.dart';
+import 'dropdown_divider.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

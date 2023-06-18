@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
+import 'package:softwareprojekt/globaldata/global_data.dart';
 import '../widgets/alarm_tile.dart';
 import 'ring.dart';
 import 'edit_alarm.dart';
@@ -12,22 +13,34 @@ class AlarmScreen extends StatefulWidget {
   State<AlarmScreen> createState() => _AlarmScreenState();
 }
 
-class _AlarmScreenState extends State<AlarmScreen> {
+class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   late List<AlarmSettings> alarms;
   static StreamSubscription? subscription;
   bool isLocked = true;
+  bool showAnimation = false;
 
-  @override
+@override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     loadAlarms();
     subscription ??= Alarm.ringStream.stream.listen(navigateToRingScreen);
+    handleChallengeResult();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     subscription?.cancel();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      handleChallengeResult();
+    }
   }
 
   void loadAlarms() {
@@ -37,9 +50,19 @@ class _AlarmScreenState extends State<AlarmScreen> {
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => RingScreen(alarmSettings: alarmSettings)));
+    String challenge = GlobalData().alarmChallenges[alarmSettings.id] ?? 'Math';
+    
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RingScreen(
+          alarmSettings: alarmSettings,
+          challenge: challenge,
+        ),
+      ),
+    );
     loadAlarms();
-  }
+}
 
   Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
     final res = await showModalBottomSheet<bool?>(
@@ -56,6 +79,20 @@ class _AlarmScreenState extends State<AlarmScreen> {
     if (res != null && res == true) loadAlarms();
   }
 
+  void handleChallengeResult() {
+  setState(() {
+    if (GlobalData().showAnimation) {
+      showAnimation = true;
+      Timer(const Duration(seconds: 2), () {
+        setState(() {
+          showAnimation = false;
+        });
+      });
+      GlobalData().showAnimation = false;
+    }
+  });
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +100,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(isLocked ? Icons.lock : Icons.lock_open, color: const Color(0xff212435), size: 24),
-          onPressed: () => setState(() => isLocked = !isLocked),
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Color(0xff212435), size: 24),
@@ -94,13 +127,30 @@ class _AlarmScreenState extends State<AlarmScreen> {
                         return AlarmTile(
                           key: Key(alarms[index].id.toString()),
                           title: TimeOfDay(hour: alarms[index].dateTime.hour, minute: alarms[index].dateTime.minute).format(context),
-                          onPressed: isLocked ? null : () => navigateToAlarmScreen(alarms[index]),
-                          onDismissed: () => Alarm.stop(alarms[index].id).then((_) => loadAlarms()),
-                          isLocked: isLocked,
+                          onPressed: () => navigateToAlarmScreen(alarms[index]),
+                          onDismissed: (direction) {
+                            final alarmId = alarms[index].id;
+                            GlobalData().alarmChallenges.remove(alarmId);
+                            Alarm.stop(alarmId).then((_) => loadAlarms());
+                          },
                         );
                       },
                     ),
             ),
+            if (showAnimation) ...[
+              Center(
+                child: AnimatedOpacity(
+                  opacity: showAnimation ? 1.0 : 0.0,
+                  duration: const Duration(seconds: 3),
+                  curve: Curves.easeInOut,
+                  child: const Icon(
+                    Icons.check,
+                    color: Colors.green,
+                    size: 60,
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
