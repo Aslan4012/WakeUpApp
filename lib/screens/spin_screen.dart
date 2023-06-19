@@ -23,6 +23,7 @@ class _SpinScreenState extends State<SpinScreen> {
   StreamSubscription<GyroscopeEvent>? gyroscopeStreamSubscription;
   bool isButtonVisible = true;
   bool isTextVisible = false;
+  double percent = 0;
 
   void startSpinning() {
     setState(() {
@@ -40,6 +41,7 @@ class _SpinScreenState extends State<SpinScreen> {
           sumz = sumz + (z / 2);
           absumz = sumz.abs();
           remaining = 3000 - sumz;
+          percent = (absumz / 3000) * 100;
         });
       }
 
@@ -78,7 +80,7 @@ class _SpinScreenState extends State<SpinScreen> {
                 percent: sumz.abs() / 3000,
                 progressColor: Colors.deepPurple,
                 center: Text(
-                  'Degrees: ${absumz.toStringAsFixed(0)}',
+                  '${percent.toStringAsFixed(0)}',
                   style: TextStyle(fontSize: 20),
                 ),
               ),

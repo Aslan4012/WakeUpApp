@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\Users\marti\Desktop\flutter_windows_3.10.3-stable\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\marti\Downloads\WakeUpApp-master\WakeUpApp-master"
+export "FLUTTER_ROOT=/Applications/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/aslandalhoffbehbahani/Desktop/WakeUpApp"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.1.2"
