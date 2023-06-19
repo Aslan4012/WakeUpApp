@@ -21,6 +21,7 @@ class _WalkScreenState extends State<WalkScreen> {
   String _status = '?';
   int _steps = 0;
   int targetSteps = 0;
+  bool isNavigating = false;
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _WalkScreenState extends State<WalkScreen> {
 
   int generateRandomTargetSteps() {
     final random = Random();
-    return random.nextInt(30) + 10; // Generates et tal mellem 10 og 40
+    return random.nextInt(30) + 10; // Generates a number between 10 and 40
   }
 
   void onStepCount(StepCount event) {
@@ -90,6 +91,7 @@ class _WalkScreenState extends State<WalkScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            isNavigating = false; // Reset isNavigating when going back
             Navigator.pop(context);
           },
         ),
@@ -146,15 +148,14 @@ class _WalkScreenState extends State<WalkScreen> {
   }
 
   void result() {
-    if (_steps >= targetSteps) {
+    if (_steps >= targetSteps && !isNavigating) {
+      isNavigating = true;
       GlobalData().showAnimation = true;
       Alarm.stop(widget.alarmId).then((_) {
         Navigator.pop(context);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => AlarmScreen()));
       });
-    } else {
-      return;
     }
   }
 }
