@@ -19,7 +19,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   bool isLocked = true;
   bool showAnimation = false;
 
-@override
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -51,7 +51,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
     String challenge = GlobalData().alarmChallenges[alarmSettings.id] ?? 'Math';
-    
+
     await Navigator.push(
       context,
       MaterialPageRoute(
@@ -62,7 +62,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
       ),
     );
     loadAlarms();
-}
+  }
 
   Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
     final res = await showModalBottomSheet<bool?>(
@@ -80,18 +80,18 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   }
 
   void handleChallengeResult() {
-  setState(() {
-    if (GlobalData().showAnimation) {
-      showAnimation = true;
-      Timer(const Duration(seconds: 2), () {
-        setState(() {
-          showAnimation = false;
+    setState(() {
+      if (GlobalData().showAnimation) {
+        showAnimation = true;
+        Timer(const Duration(seconds: 2), () {
+          setState(() {
+            showAnimation = false;
+          });
         });
-      });
-      GlobalData().showAnimation = false;
-    }
-  });
-}
+        GlobalData().showAnimation = false;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,10 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     alarms.isEmpty ? "You have no alarms" : "Alarms",
-                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 30, color: Colors.black),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 30,
+                        color: Colors.black),
                   ),
                 ),
                 Expanded(
@@ -128,8 +131,12 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                           itemBuilder: (context, index) {
                             return AlarmTile(
                               key: Key(alarms[index].id.toString()),
-                              title: TimeOfDay(hour: alarms[index].dateTime.hour, minute: alarms[index].dateTime.minute).format(context),
-                              onPressed: () => navigateToAlarmScreen(alarms[index]),
+                              title: TimeOfDay(
+                                      hour: alarms[index].dateTime.hour,
+                                      minute: alarms[index].dateTime.minute)
+                                  .format(context),
+                              onPressed: () =>
+                                  navigateToAlarmScreen(alarms[index]),
                               onDismissed: (direction) {
                                 final alarmId = alarms[index].id;
                                 GlobalData().alarmChallenges.remove(alarmId);
