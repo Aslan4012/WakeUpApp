@@ -19,7 +19,7 @@ class _WalkScreenState extends State<WalkScreen> {
   late Stream<StepCount> _stepCountStream;
   late Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?';
-  int _steps = 0;
+  late int _steps;
   int targetSteps = 0;
 
   @override
@@ -38,8 +38,10 @@ class _WalkScreenState extends State<WalkScreen> {
     setState(() {
       _steps = event.steps;
       print(_steps);
-      result();
     });
+    if (_steps >= targetSteps) {
+      result();
+    }
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
@@ -153,8 +155,6 @@ class _WalkScreenState extends State<WalkScreen> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => AlarmScreen()));
       });
-    } else {
-      return;
     }
   }
 }

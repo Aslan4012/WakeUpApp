@@ -109,12 +109,12 @@ class MathChallenges extends StatelessWidget {
                   color: Color(0xfff2f2f2),
                   shape: BoxShape.circle,
                 ),
-                child: const Image(
-                  image: NetworkImage(
-                      "https://cdn0.iconfinder.com/data/icons/math-symbols-filled-line/614/7687_-_Math_Symbols_I-256.png"),
-                  height: 40,
-                  width: 40,
+                child: Image.asset(
+                  'assets/math_image.png',
                   fit: BoxFit.cover,
+                  height: 60,
+                  width: 60,
+                  alignment: Alignment.center,
                 ),
               ),
               Expanded(

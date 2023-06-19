@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
+import 'package:softwareprojekt/widgets/math_input_widget.dart';
+import 'package:softwareprojekt/widgets/math_keys_widgets.dart';
 import '../alarmscreens/alarm_screen.dart';
 import '../globaldata/global_data.dart';
 import '../screens/const.dart';
@@ -22,21 +24,6 @@ class MathChallenge extends StatefulWidget {
 }
 
 class _MathChallengeState extends State<MathChallenge> {
-  List<String> calculatorKeys = [
-    '7',
-    '8',
-    '9',
-    '0',
-    '4',
-    '5',
-    '6',
-    'C',
-    '1',
-    '2',
-    '3',
-    '=',
-  ];
-
   String answer = '';
   var numGen = Random();
   late int num1;
@@ -142,104 +129,14 @@ class _MathChallengeState extends State<MathChallenge> {
       body: Stack(
         children: [
           backGround(),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 100,
-                horizontal: 24.0,
-              ),
-              child: FractionallySizedBox(
-                widthFactor: 0.8,
-                heightFactor: 0.3,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    color: Colors.blue[300],
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '$num1 $operatorSymbol $num2 = ',
-                            style: textAll,
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              width: 100,
-                              height: 50,
-                              color: const Color.fromARGB(127, 11, 11, 222),
-                              child: Center(
-                                child: Text(
-                                  answer,
-                                  style: textAll,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 50,
-                horizontal: 24.0,
-              ),
-              child: FractionallySizedBox(
-                widthFactor: 1,
-                heightFactor: 0.41,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    color: Colors.blue[300],
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GridView.builder(
-                          itemCount: calculatorKeys.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                          ),
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: GestureDetector(
-                                onTap: () =>
-                                    buttonspressed(calculatorKeys[index]),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromARGB(127, 11, 11, 222),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      calculatorKeys[index],
-                                      style: textAll,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          MathInput(
+              num1: num1,
+              num2: num2,
+              operatorSymbol: operatorSymbol,
+              answer: answer),
+          MathKeys(
+            onPressed: buttonspressed,
+          )
         ],
       ),
     );
