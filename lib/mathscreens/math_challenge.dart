@@ -23,7 +23,18 @@ class MathChallenge extends StatefulWidget {
 
 class _MathChallengeState extends State<MathChallenge> {
   List<String> calculatorKeys = [
-    '7', '8', '9', '0', '4', '5', '6', 'C', '1', '2', '3', '=',
+    '7',
+    '8',
+    '9',
+    '0',
+    '4',
+    '5',
+    '6',
+    'C',
+    '1',
+    '2',
+    '3',
+    '=',
   ];
 
   String answer = '';
@@ -69,53 +80,52 @@ class _MathChallengeState extends State<MathChallenge> {
   }
 
   void generateRandomNumbers() {
-  setState(() {
-    switch (widget.chosen) {
-      case "add":
-        operatorSymbol = "+";
-        num1 = numGen.nextInt(100);
-        num2 = numGen.nextInt(100);
-        result = num1 + num2;
-        break;
+    setState(() {
+      switch (widget.chosen) {
+        case "add":
+          operatorSymbol = "+";
+          num1 = numGen.nextInt(100);
+          num2 = numGen.nextInt(100);
+          result = num1 + num2;
+          break;
 
-      case "minus":
-        operatorSymbol = "-";
-        num1 = numGen.nextInt(100);
-        num2 = numGen.nextInt(100);
-        // Ensure num1 is always greater or equal to num2... No negative results.
-        if (num1 < num2) {
-          int temp = num1;
-          num1 = num2;
-          num2 = temp;
-        }
-        result = num1 - num2;
-        break;
+        case "minus":
+          operatorSymbol = "-";
+          num1 = numGen.nextInt(100);
+          num2 = numGen.nextInt(100);
+          // Ensure num1 is always greater or equal to num2... No negative results.
+          if (num1 < num2) {
+            int temp = num1;
+            num1 = num2;
+            num2 = temp;
+          }
+          result = num1 - num2;
+          break;
 
-      case "multiply":
-        operatorSymbol = "*";
-        num1 = numGen.nextInt(16); // 0 to 15
-        num2 = numGen.nextInt(16);
-        result = num1 * num2;
-        break;
+        case "multiply":
+          operatorSymbol = "*";
+          num1 = numGen.nextInt(16); // 0 to 15
+          num2 = numGen.nextInt(16);
+          result = num1 * num2;
+          break;
 
-      //Ensure no division by zero, ensure that result is a whole number: 
-      //Num 2 is randomly chosen and num1 is a product of num 2 and another random number. Result will be a whole number...
-      case "divide":
-        operatorSymbol = "/";
-        num2 = numGen.nextInt(10) + 1;
-        num1 = num2 * (numGen.nextInt(10) + 1);
-        result = num1 ~/ num2;
-        break;
+        //Ensure no division by zero, ensure that result is a whole number:
+        //Num 2 is randomly chosen and num1 is a product of num 2 and another random number. Result will be a whole number...
+        case "divide":
+          operatorSymbol = "/";
+          num2 = numGen.nextInt(10) + 1;
+          num1 = num2 * (numGen.nextInt(10) + 1);
+          result = num1 ~/ num2;
+          break;
 
-      default:
-        operatorSymbol = "+";
-        num1 = numGen.nextInt(100);
-        num2 = numGen.nextInt(100);
-        result = num1 + num2;
-    }
-  });
-}
-
+        default:
+          operatorSymbol = "+";
+          num1 = numGen.nextInt(100);
+          num2 = numGen.nextInt(100);
+          result = num1 + num2;
+      }
+    });
+  }
 
   void nextQ() {
     Navigator.of(context).pop();
@@ -123,44 +133,6 @@ class _MathChallengeState extends State<MathChallenge> {
       answer = '';
     });
     generateRandomNumbers();
-  }
-
-  void dialogBox(String text, VoidCallback nextQ, BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.blueAccent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          content: Container(
-            height: 200,
-            color: Colors.blueAccent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text,
-                  style: textAll,
-                ),
-                GestureDetector(
-                  onTap: nextQ,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.arrow_forward, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -218,11 +190,11 @@ class _MathChallengeState extends State<MathChallenge> {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 50, 
+                vertical: 50,
                 horizontal: 24.0,
               ),
               child: FractionallySizedBox(
-                widthFactor: 1, 
+                widthFactor: 1,
                 heightFactor: 0.41,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
@@ -234,17 +206,20 @@ class _MathChallengeState extends State<MathChallenge> {
                         child: GridView.builder(
                           itemCount: calculatorKeys.length,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                           ),
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(8),
                               child: GestureDetector(
-                                onTap: () => buttonspressed(calculatorKeys[index]),
+                                onTap: () =>
+                                    buttonspressed(calculatorKeys[index]),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: const Color.fromARGB(127, 11, 11, 222),
+                                    color:
+                                        const Color.fromARGB(127, 11, 11, 222),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Center(
