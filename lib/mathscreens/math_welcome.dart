@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'plus_screen.dart';
 
-//import 'minus_screen.dart'; 
+//import 'minus_screen.dart';
 //import 'multiply_screen.dart';
 //import 'divide_screen.dart';
 
@@ -27,7 +27,6 @@ class MathChallenges extends StatelessWidget {
           ),
         ),
       ),
-      
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
         child: Column(
@@ -47,7 +46,6 @@ class MathChallenges extends StatelessWidget {
                 ),
               ),
             ),
-            
             Column(
               children: [
                 card(context, "Add", () => AddMathChallenge(alarmId: alarmId)),
@@ -62,16 +60,17 @@ class MathChallenges extends StatelessWidget {
     );
   }
 
-    Widget card(BuildContext context, String title, Widget Function() createTargetScreen) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => createTargetScreen(),
-        ),
-      );
-    },
+  Widget card(BuildContext context, String title,
+      Widget Function() createTargetScreen) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => createTargetScreen(),
+          ),
+        );
+      },
       child: Card(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
         color: Color(0xffffffff),
@@ -97,7 +96,8 @@ class MathChallenges extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Image(
-                  image: NetworkImage("https://cdn0.iconfinder.com/data/icons/math-symbols-filled-line/614/7687_-_Math_Symbols_I-256.png"),
+                  image: NetworkImage(
+                      "https://cdn0.iconfinder.com/data/icons/math-symbols-filled-line/614/7687_-_Math_Symbols_I-256.png"),
                   height: 40,
                   width: 40,
                   fit: BoxFit.cover,
