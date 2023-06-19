@@ -20,15 +20,16 @@ class _WalkScreenState extends State<WalkScreen> {
   late Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?';
   int _steps = 0;
-  int targetSteps = 0;
+  int _initialSteps = 0; 
+  late int targetSteps;
   bool isNavigating = false;
 
   @override
   void initState() {
-    super.initState();
-    targetSteps = generateRandomTargetSteps();
-    initPlatformState();
-  }
+  super.initState();
+  initPlatformState();
+  targetSteps = generateRandomTargetSteps();
+}
 
   int generateRandomTargetSteps() {
     final random = Random();
@@ -36,12 +37,16 @@ class _WalkScreenState extends State<WalkScreen> {
   }
 
   void onStepCount(StepCount event) {
+    if (_initialSteps == 0) {
+      _initialSteps = event.steps;
+    }
     setState(() {
-      _steps = event.steps;
+      _steps = event.steps - _initialSteps;
       print(_steps);
       result();
-    });
-  }
+    }
+  );
+}
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
     setState(() {
@@ -148,14 +153,15 @@ class _WalkScreenState extends State<WalkScreen> {
   }
 
   void result() {
-    if (_steps >= targetSteps && !isNavigating) {
-      isNavigating = true;
-      GlobalData().showAnimation = true;
-      Alarm.stop(widget.alarmId).then((_) {
-        Navigator.pop(context);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AlarmScreen()));
-      });
-    }
+  if (_steps >= targetSteps && !isNavigating) {
+    print('CALLED RESULT');
+    isNavigating = true;
+    GlobalData().showAnimation = true;
+    Alarm.stop(widget.alarmId).then((_) {
+      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AlarmScreen()));
+    });
   }
+}
 }
