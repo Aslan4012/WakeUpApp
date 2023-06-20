@@ -1,4 +1,4 @@
-//Top requirements for the import statements is the support for asynchronous programming, 
+//Top requirements for the import statements is the support for asynchronous programming,
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
@@ -58,4 +58,3 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
     );
   }
 }
-

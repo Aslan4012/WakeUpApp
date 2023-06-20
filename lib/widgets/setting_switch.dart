@@ -19,7 +19,8 @@ class SettingSwitch extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 18, color: Colors.black),
+          style: const TextStyle(
+              fontWeight: FontWeight.w300, fontSize: 18, color: Colors.black),
         ),
         Switch(
           value: value,
@@ -29,4 +30,3 @@ class SettingSwitch extends StatelessWidget {
     );
   }
 }
-

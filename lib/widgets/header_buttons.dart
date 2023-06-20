@@ -18,7 +18,8 @@ class HeaderButtons extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 26, color: Colors.black),
+          style: const TextStyle(
+              fontWeight: FontWeight.w700, fontSize: 26, color: Colors.black),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -27,14 +28,20 @@ class HeaderButtons extends StatelessWidget {
               onPressed: onCancel,
               child: const Text(
                 "Cancel",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Colors.black),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: Colors.black),
               ),
             ),
             TextButton(
               onPressed: onSave,
               child: const Text(
                 "Save",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Colors.black),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: Colors.black),
               ),
             ),
           ],
@@ -43,5 +50,3 @@ class HeaderButtons extends StatelessWidget {
     );
   }
 }
-
-

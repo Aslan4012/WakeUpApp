@@ -19,4 +19,3 @@ class DeleteButton extends StatelessWidget {
     );
   }
 }
-

@@ -36,4 +36,3 @@ class ChallengeDropdown extends StatelessWidget {
     );
   }
 }
-
