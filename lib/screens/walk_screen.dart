@@ -33,7 +33,7 @@ class _WalkScreenState extends State<WalkScreen> {
 
   int generateRandomTargetSteps() {
     final random = Random();
-    return random.nextInt(20) + 10; // Generates a number between 10 and 40
+    return random.nextInt(20) + 10; // Generates a number between 10 and 30
   }
 
   void onStepCount(StepCount event) {
