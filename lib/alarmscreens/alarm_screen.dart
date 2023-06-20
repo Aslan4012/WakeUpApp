@@ -16,7 +16,6 @@ class AlarmScreen extends StatefulWidget {
 class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   late List<AlarmSettings> alarms;
   static StreamSubscription? subscription;
-  bool isLocked = true;
   bool showAnimation = false;
 
   @override
