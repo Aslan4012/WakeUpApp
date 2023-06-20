@@ -102,7 +102,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Color(0xff212435), size: 24),
-            onPressed: () => navigateToAlarmScreen(null),
+            onPressed: () => navigateToEditAlarmScreen(null),
           )
         ],
       ),
