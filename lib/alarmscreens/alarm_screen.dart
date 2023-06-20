@@ -63,7 +63,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
     loadAlarms();
   }
 
-  Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
+  Future<void> navigateToEditAlarmScreen(AlarmSettings? settings) async {
     final res = await showModalBottomSheet<bool?>(
       context: context,
       isScrollControlled: true,
@@ -135,7 +135,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                                       minute: alarms[index].dateTime.minute)
                                   .format(context),
                               onPressed: () =>
-                                  navigateToAlarmScreen(alarms[index]),
+                                  navigateToEditAlarmScreen(alarms[index]),
                               onDismissed: (direction) {
                                 final alarmId = alarms[index].id;
                                 GlobalData().alarmChallenges.remove(alarmId);
