@@ -1,10 +1,6 @@
-
-
-
 import 'package:flutter/material.dart';
 
 import '../screens/const.dart';
-
 
 class MathInput extends StatelessWidget {
   final int num1;
@@ -12,7 +8,18 @@ class MathInput extends StatelessWidget {
   final String operatorSymbol;
   final String answer;
   final List<String> calculatorKeys = [
-    '7', '8', '9', '0', '4', '5', '6', 'C', '1', '2', '3', '=',
+    '7',
+    '8',
+    '9',
+    '0',
+    '4',
+    '5',
+    '6',
+    'C',
+    '1',
+    '2',
+    '3',
+    '=',
   ];
 
   MathInput({
@@ -22,7 +29,6 @@ class MathInput extends StatelessWidget {
     required this.operatorSymbol,
     required this.answer,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {

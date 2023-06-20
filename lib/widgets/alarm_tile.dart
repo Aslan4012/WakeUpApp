@@ -33,7 +33,8 @@ class AlarmTile extends StatelessWidget {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Confirm"),
-              content: const Text("Are you sure you want to delete this alarm?"),
+              content:
+                  const Text("Are you sure you want to delete this alarm?"),
               actions: <Widget>[
                 TextButton(
                   child: const Text("CANCEL"),
@@ -70,7 +71,7 @@ class AlarmTile extends StatelessWidget {
                   title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 28,
+                    fontSize: 25,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

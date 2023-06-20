@@ -113,7 +113,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(2.0),
                   child: Text(
                     alarms.isEmpty ? "You have no alarms" : "Alarms",
                     style: const TextStyle(

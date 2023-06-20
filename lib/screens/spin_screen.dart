@@ -37,8 +37,8 @@ class _SpinScreenState extends State<SpinScreen> {
       bool isStationary = z.abs() < 0.1;
       if (!isStationary) {
         setState(() {
-          // Calculate rotation in degrees
-          sumz = sumz + (z / 2);
+          sumz =
+              sumz + (z / 2); //z/2 giver ca. 360 grader, når man snurrer rundt
           absumz = sumz.abs();
           remaining = 3000 - sumz;
           percent = (absumz / 3000) * 100;
@@ -68,9 +68,10 @@ class _SpinScreenState extends State<SpinScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SpinButton(
-                title: 'Start Spinning',
-                isVisible: isButtonVisible,
-                onStartSpinning: startSpinning),
+              title: 'Start Spinning',
+              isVisible: isButtonVisible,
+              onStartSpinning: startSpinning,
+            ),
             SizedBox(height: 20),
             Visibility(
               visible: isTextVisible,
@@ -84,13 +85,6 @@ class _SpinScreenState extends State<SpinScreen> {
                   style: TextStyle(fontSize: 20),
                 ),
               ),
-              // child: Padding(
-              //   padding: const EdgeInsets.all(30.0),
-              //   child: Text(
-              //     'You have spun ${sumz.toStringAsFixed(0)} degrees! Reach either 3000 or -3000 to stop!',
-              //     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              //   ),
-              // ),
             ),
           ],
         ),

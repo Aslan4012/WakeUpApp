@@ -37,7 +37,6 @@ class _ShakeScreenState extends State<ShakeScreen> {
                 MaterialPageRoute(builder: (context) => const AlarmScreen()));
           });
         }
-        // Do stuff on phone shake
       },
       minimumShakeCount: 1,
       shakeSlopTimeMS: 375,

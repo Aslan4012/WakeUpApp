@@ -1,15 +1,22 @@
-
-
-
 import 'package:flutter/material.dart';
 
 import '../screens/const.dart';
 
-
 class MathKeys extends StatelessWidget {
   final void Function(String) onPressed;
   final List<String> calculatorKeys = [
-    '7', '8', '9', '0', '4', '5', '6', 'C', '1', '2', '3', '=',
+    '7',
+    '8',
+    '9',
+    '0',
+    '4',
+    '5',
+    '6',
+    'C',
+    '1',
+    '2',
+    '3',
+    '=',
   ];
 
   MathKeys({
@@ -17,19 +24,18 @@ class MathKeys extends StatelessWidget {
     required this.onPressed,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          vertical: 50, 
+          vertical: 50,
           horizontal: 24.0,
         ),
         child: FractionallySizedBox(
-          widthFactor: 1, 
-          heightFactor: 0.41,
+          widthFactor: 1,
+          heightFactor: 0.44,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Container(
@@ -40,7 +46,8 @@ class MathKeys extends StatelessWidget {
                   child: GridView.builder(
                     itemCount: calculatorKeys.length,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                     ),
                     itemBuilder: (context, index) {

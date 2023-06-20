@@ -52,7 +52,8 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
           widget.alarmSettings!.notificationBody != null &&
           widget.alarmSettings!.notificationBody!.isNotEmpty;
       assetAudio = widget.alarmSettings!.assetAudioPath;
-      challenge = GlobalData().alarmChallenges[widget.alarmSettings!.id] ?? 'Math';
+      challenge =
+          GlobalData().alarmChallenges[widget.alarmSettings!.id] ?? 'Math';
     }
   }
 
@@ -69,14 +70,14 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
   }
 
   void _onChallengeChanged(String newChallenge) {
-  setState(() {
-    challenge = newChallenge;
-    if (!creating) {
-      // if not creating, we have an existing alarm
-      GlobalData().alarmChallenges[widget.alarmSettings!.id] = newChallenge;
-    }
-  });
-}
+    setState(() {
+      challenge = newChallenge;
+      if (!creating) {
+        // if not creating, we have an existing alarm
+        GlobalData().alarmChallenges[widget.alarmSettings!.id] = newChallenge;
+      }
+    });
+  }
 
   void _onLoopAudioChanged(bool value) {
     setState(() {
@@ -134,9 +135,10 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
       if (res) {
         GlobalData().alarmChallenges[alarmSettings.id] = challenge;
         Navigator.pop(context, true);
-        
+
         // ignore: avoid_print, for TESTING...
-        print('SETTING ALARM: Challenge for alarm with id: ${alarmSettings.id} set to: ${GlobalData().alarmChallenges[alarmSettings.id]}');
+        print(
+            'SETTING ALARM: Challenge for alarm with id: ${alarmSettings.id} set to: ${GlobalData().alarmChallenges[alarmSettings.id]}');
       }
     });
   }
@@ -146,14 +148,16 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
       if (res) {
         int testvariable = widget.alarmSettings!.id;
         // ignore: avoid_print, for TESTING...
-        print('Deleting alarm with id $testvariable, challenge: ${GlobalData().alarmChallenges[testvariable]}');
+        print(
+            'Deleting alarm with id $testvariable, challenge: ${GlobalData().alarmChallenges[testvariable]}');
 
         //Our functionality
         GlobalData().alarmChallenges.remove(widget.alarmSettings!.id);
         Navigator.pop(context, true);
-        
+
         // ignore: avoid_print, for TESTING...
-        print('challenge at $testvariable is null: ' + '${GlobalData().alarmChallenges[testvariable] == null}');
+        print('challenge at $testvariable is null: ' +
+            '${GlobalData().alarmChallenges[testvariable] == null}');
       }
     });
   }
@@ -162,22 +166,41 @@ class _EditAlarmScreenState extends State<EditAlarmScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: ListView(
+        padding: EdgeInsets.zero,
         children: [
-          HeaderButtons(title: creating ? 'Create Alarm' :  'Editing Alarm', 
-            onCancel: () => Navigator.pop(context, false), 
-            onSave: _saveAlarm
+          HeaderButtons(
+            title: creating ? 'Create Alarm' : 'Editing Alarm',
+            onCancel: () => Navigator.pop(context, false),
+            onSave: _saveAlarm,
           ),
           TimePickerButton(selectedTime: selectedTime, onTimePick: _onTimePick),
-          SoundDropdown(value: assetAudio, onChanged: _onSoundChanged),
-          ChallengeDropdown(value: challenge, onChanged: _onChallengeChanged),
-          SettingSwitch(title: 'Loop alarm audio', value: loopAudio, onChanged: _onLoopAudioChanged),
-          SettingSwitch(title: 'Vibrate', value: vibrate, onChanged: _onVibrateChanged),
-          SettingSwitch(title: 'Show notification', value: showNotification, onChanged: _onShowNotificationChanged),
-          if (!creating)
-            DeleteButton(onDelete: _deleteAlarm),
-          const SizedBox(),
+          Center(
+            child: Column(
+              children: [
+                SoundDropdown(value: assetAudio, onChanged: _onSoundChanged),
+                ChallengeDropdown(
+                    value: challenge, onChanged: _onChallengeChanged),
+              ],
+            ),
+          ),
+          SettingSwitch(
+            title: 'Loop alarm audio',
+            value: loopAudio,
+            onChanged: _onLoopAudioChanged,
+          ),
+          SettingSwitch(
+            title: 'Vibrate',
+            value: vibrate,
+            onChanged: _onVibrateChanged,
+          ),
+          SettingSwitch(
+            title: 'Show notification',
+            value: showNotification,
+            onChanged: _onShowNotificationChanged,
+          ),
+          if (!creating) DeleteButton(onDelete: _deleteAlarm),
+          SizedBox(height: 8), // Add some spacing at the bottom
         ],
       ),
     );
