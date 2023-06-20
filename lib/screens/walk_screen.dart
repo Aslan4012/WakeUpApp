@@ -33,7 +33,7 @@ class _WalkScreenState extends State<WalkScreen> {
 
   int generateRandomTargetSteps() {
     final random = Random();
-    return random.nextInt(30) + 10; // Generates a number between 10 and 40
+    return random.nextInt(20) + 10; // Generates a number between 10 and 40
   }
 
   void onStepCount(StepCount event) {
@@ -42,7 +42,6 @@ class _WalkScreenState extends State<WalkScreen> {
     }
     setState(() {
       _steps = event.steps - _initialSteps;
-      print(_steps);
       result();
     });
   }
@@ -91,13 +90,6 @@ class _WalkScreenState extends State<WalkScreen> {
               style: const TextStyle(fontSize: 16),
             ),
           ],
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            isNavigating = false; // Reset isNavigating when going back
-            Navigator.pop(context);
-          },
         ),
       ),
       body: Container(
@@ -153,7 +145,6 @@ class _WalkScreenState extends State<WalkScreen> {
 
   void result() {
     if (_steps >= targetSteps && !isNavigating) {
-      print('CALLED RESULT');
       isNavigating = true;
       GlobalData().showAnimation = true;
       Alarm.stop(widget.alarmId).then((_) {
